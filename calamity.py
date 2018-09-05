@@ -75,7 +75,7 @@ class Calamity:
         
             
     def listTopics(self):
-        return [(x['meta']['topic'], x['meta']['label']) for x in self.payload]
+        return [(x['meta']['topic'], x['meta']['label'], len(x['articles'])) for x in self.payload]
     
     def listEvents(self, topic):
         res = []
