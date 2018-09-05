@@ -1,7 +1,7 @@
 import time
 import nltk
 import requests
-from random import choice
+from random import choice, shuffle
 from newspaper import Article, Config
 
 class Calamity:
@@ -93,6 +93,26 @@ class Calamity:
                 return len(x['articles'])
         print('[?] Label not found')
         return 0
+    
+    def getTopic(self, topicLabel):
+        return [x for x in self.payload if x['meta']['topic'] == topicLabel]
+    
+    def mergeTopicArticles(self, topicLabelArr, limit = None):
+        res = []
+        for t in topicLabelArr:
+            for x in self.getTopic(t):
+                res.extend(x['articles'][:limit])
+        shuffle(res)
+        return res[:limit]
+    
+    def mergeEventArticles(self, eventLabelArr, limit = None):
+        res = []
+        for t in eventLabelArr:
+            x = self.getEvent(t)
+            res.extend(x['articles'][:limit])
+        shuffle(res)
+        return res[:limit]
+                
     
     def getEvent(self, eventLabel):
         for x in self.payload:
